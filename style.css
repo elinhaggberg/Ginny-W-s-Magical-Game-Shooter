@@ -1,0 +1,40 @@
+body {
+    background-color: forestgreen;
+    padding: 0;
+}
+
+.header {
+    background-color: beige;
+    text-align: center;
+    padding: 1em;
+}
+
+.main {
+    background-color: #000;
+    height: 500px;
+    
+}
+
+.footer {
+    background-color: beige;
+    padding: 1em;
+    text-align: center;
+    color: #666;
+}
+
+.footer p {
+    font-family: "Helvetica", sans-serif;
+    font-size: 11px;
+}
+
+h1 {
+    font-family: "Georgia", serif;
+    text-shadow: 2px 2px 3px #f2f;
+}
+
+.subtitle {
+    font-size: 100%;
+    font-weight: normal;
+    font-family: "Helvetica", sans-serif;
+    color: #666;
+}
