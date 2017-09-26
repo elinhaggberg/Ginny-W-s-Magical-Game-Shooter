@@ -2,6 +2,8 @@
     <head>
     <title>Spacegame</title>
     <link rel="stylesheet" href="style.css"> 
+    <script src="libs/phaser.min.js"></script>
+    <script src="source/maingamestate.js"></script>
     </head>
     <body>
         <header class="header">
@@ -10,12 +12,16 @@
             <h3 class="subtitle">Ett typiskt kul spel</h3>
         </header>
         <main class="main">
-            <div class="gameContainer">
-            Game goes here
+            <div id="gameContainer">
             </div>
         </main>
         <footer class="footer">
             <p>Created by Elin Häggberg @ Tjejer Kodar 2017</p>
         </footer>
+        <script>
+        var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameContainer'); 
+        game.state.add("MainGame", mainGameState);
+        game.state.start("MainGame");
+        </script>
     </body>
 </html>
