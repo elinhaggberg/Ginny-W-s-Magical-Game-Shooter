@@ -9,6 +9,15 @@ mainGameState.preload = function () {
     this.game.load.audio("game-music", "assets/music/harry-potter-8bit.WAV")
     this.game.load.image("quaffle", "assets/images/quaffle.png")
     this.game.load.image("bludger", "assets/images/bludger.png")
+    this.game.load.image("snitch", "assets/images/snitch.png")
+    this.game.load.image("red-spell", "assets/images/red-spell.png");
+    //Load all shooting effects
+    this.game.load.audio("player-fire-01","assets/audio/player_fire_01.mp3");
+    this.game.load.audio("player-fire-02","assets/audio/player_fire_02.mp3");
+    this.game.load.audio("player-fire-03","assets/audio/player_fire_03.mp3");
+    this.game.load.audio("player-fire-04","assets/audio/player_fire_04.mp3");
+    this.game.load.audio("player-fire-05","assets/audio/player_fire_05.mp3");
+    this.game.load.audio("player-fire-06","assets/audio/player_fire_06.mp3");
 }
 
 //Add the create function 
@@ -24,6 +33,18 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Create group for falling balls 
     this.balls = game.add.group();
     
+//Create group for fired spells 
+    this.spells = game.add.group();
+    
+//Create the shooting sound effects 
+    this.playerFireSfx = [];
+    this.playerFireSfx.push(game.add.audio("player-fire-01"));
+    this.playerFireSfx.push(game.add.audio("player-fire-02"));
+    this.playerFireSfx.push(game.add.audio("player-fire-03"));
+    this.playerFireSfx.push(game.add.audio("player-fire-04"));
+    this.playerFireSfx.push(game.add.audio("player-fire-05"));
+    this.playerFireSfx.push(game.add.audio("player-fire-06"));
+    
 //Add the background music
     this.music = game.add.audio('game-music');
     this.music.play();
@@ -33,6 +54,15 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Add coordinate-variables that uses game width and height    
     var x = game.width * 0.5;
     var y = game.height * 0.8;
+    
+//Timer for balls 
+    this.ballTimer = 2.0;
+    
+//Timer for spell shooting speed 
+    this.spellTimer = 0.3;
+    
+//Timer for the golden snitch
+    this.snitchTimer = 4.0;
 
 //Add the player-sprite and set its anchorpoint and scale
     this.playerSprite = game.add.sprite(x,y,'player');
@@ -41,12 +71,14 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     
 //Enable movement of the Player 
     game.physics.arcade.enable(this.playerSprite);
+    this.playerSprite.body.imovable = true;
     
 //CONTROLS – activating the game controls for the player 
     this.cursors = game.input.keyboard.createCursorKeys();
-
-//Timer for balls 
-    this.ballTimer = 2.0;
+    this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z); 
+    
+//Random directions for the snitch
+    this.randomSpeed = game.rnd.integerInRange(-10,10);
     
 }
 
@@ -62,6 +94,8 @@ mainGameState.update = function() {
         this.playerSprite.body.velocity.x= 0;
     }
     
+mainGameState.updateRedSpell();
+    
 //Confiding ship to game screen
     if ( (this.playerSprite.x > game.width - 40) && ( this.playerSprite.body.velocity.x > 0 ) ) {
         this.playerSprite.body.velocity.x = 0;
@@ -70,6 +104,26 @@ mainGameState.update = function() {
     if ( (this.playerSprite.x < 40 ) && (this.playerSprite.body.velocity.x < 0) ) {
         this.playerSprite.body.velocity.x = 0;
     }
+    
+//Confinding the Snitch to game screen
+    
+    //var randomSpeedX = game.rnd.integerInRange(200,500);
+    //var randomSpeedY = game.rnd.integerInRange(-300, 600);
+    
+    /*if ( (this.snitchBall.x > game.width) && (
+    this.snitchBall.body.velocity.x > 0 ) ) {
+        
+        console.log("SNICTH! STAAAPHW!")
+        
+        //this.snitchBall.body.velocity.x = -randomSpeedX;
+        //this.snitchBall.body.velocity.y = randomSpeedY;
+    } */
+    
+   /* if ( (this.snitchBall.x < -30 ) && ( 
+    this.snitchBall.body.velocity.x < 0 ) ) {
+        this.snitchBall.body.velocity.x = randomSpeedX;
+        this.snitchBall.body.velocity.y = randomSpeedY;
+    } */
 
 //Set up the ballTimer 
     this.ballTimer -= game.time.physicsElapsed;
@@ -78,20 +132,34 @@ mainGameState.update = function() {
         mainGameState.spawnBludger();
         this.ballTimer = 2.0;
     }
+    
+    
+//Set up the snitchTimer
+    if (this.snitchTimer != null) {
+        this.snitchTimer -= game.time.physicsElapsed;
+        if (this.snitchTimer <= 0.0) {
+            console.log("HERE COMES THE SNITCH");
+            mainGameState.spawnSnitch();
+            this.snitchTimer = null;
+        }
+    }
 
 //Iterate over balls-group to destroy
     
     for( var i=0; i < this.balls.children.length; i++) {
         if ( this.balls.children[i].y > (game.height + 200) ) {
             this.balls.children[i].destroy();
-            console.log("BALL DESTROYED!");
         }
     }
+
+//Create the collision callback function 
+    game.physics.arcade.collide(this.balls,this.spells,mainGameState.onBallAndSpellCollision,null,this);
+
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
 }
 
-//Create the spawnQuaffle-function 
+//Create the spawnQuaffle function 
 mainGameState.spawnQuaffle = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
@@ -107,6 +175,7 @@ mainGameState.spawnQuaffle = function () {
     
 }
 
+//Creates the spawnBludger function
 mainGameState.spawnBludger = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
@@ -120,6 +189,57 @@ mainGameState.spawnBludger = function () {
     
     this.balls.add(bludgerBall);
     
+}
+
+//Creates the spawnSnitch function
+
+mainGameState.spawnSnitch = function () {
+    
+    var x = game.rnd.integerInRange(0,game.width);
+    var y = game.rnd.integerInRange(0,game.height);
+    var z = this.randomSpeed;
+    var snitchBall = game.add.sprite(x,y,'snitch');
+    snitchBall.anchor.setTo(0.5,0.5);
+    game.physics.arcade.enable(snitchBall);
+    snitchBall.body.velocity.setTo(z,z);
+}
+
+//Creates the spawnRedSpell function
+mainGameState.spawnRedSpell = function () {
+    var x = this.playerSprite.x - 19;
+    var y = this.playerSprite.y + -120;
+    var redSpell = game.add.sprite(x,y,'red-spell');
+    game.physics.arcade.enable(redSpell);
+    redSpell.body.velocity.setTo(0, -300);
+    this.spells.add(redSpell);
+    
+    //Adding the soundfx for shooting a spell
+    var index = game.rnd.integerInRange(0, this.playerFireSfx.length - 1);
+    this.playerFireSfx[index].play();
+}
+
+mainGameState.updateRedSpell = function () {
+    
+    //Shoot redSpells with Z key every 0.3s
+    this.spellTimer -= game.time.physicsElapsed;
+    if ( (this.spellTimer <= 0.0) && (this.fireKey.isDown) ) {
+        mainGameState.spawnRedSpell();
+        this.spellTimer = 0.3;
+    }
+    
+    //Interate over fired spells to destroy
+    for ( var i=0; i < this.spells.children.length; i++) {
+        if ( this.spells.children[i].y < -100 ) {
+            this.spells.children[i].destroy();
+        }
+    }
+    
+    
+}
+
+mainGameState.onBallAndSpellCollision = function (ball,spell) {
+    ball.destroy();
+    spell.destroy();
 }
 
 
