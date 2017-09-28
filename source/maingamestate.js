@@ -11,6 +11,7 @@ mainGameState.preload = function () {
     this.game.load.image("bludger", "assets/images/bludger.png")
     this.game.load.image("snitch", "assets/images/snitch.png")
     this.game.load.image("red-spell", "assets/images/red-spell.png");
+    this.game.load.image("blue-spell", "assets/images/blue-spell.png")
     //Load all shooting effects
     this.game.load.audio("player-fire-01","assets/audio/player_fire_01.mp3");
     this.game.load.audio("player-fire-02","assets/audio/player_fire_02.mp3");
@@ -30,8 +31,11 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Add background
     game.add.sprite(0, 0, 'game-bg');
     
-//Create group for falling balls 
-    this.balls = game.add.group();
+//Create group for falling Quaffle balls 
+    this.quaffleBalls = game.add.group();
+    
+//Create group for falling Bludger balls
+    this.bludgerBalls = game.add.group();
     
 //Create group for fired spells 
     this.spells = game.add.group();
@@ -76,6 +80,7 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //CONTROLS – activating the game controls for the player 
     this.cursors = game.input.keyboard.createCursorKeys();
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z); 
+    this.specialFireKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     
 //Random directions for the snitch
     this.randomSpeed = game.rnd.integerInRange(-10,10);
@@ -144,16 +149,27 @@ mainGameState.updateRedSpell();
         }
     }
 
-//Iterate over balls-group to destroy
+//Iterate over quaffleBalls-group to destroy
     
-    for( var i=0; i < this.balls.children.length; i++) {
-        if ( this.balls.children[i].y > (game.height + 200) ) {
-            this.balls.children[i].destroy();
+    for( var i=0; i < this.quaffleBalls.children.length; i++) {
+        if ( this.quaffleBalls.children[i].y > (game.height + 200) ) {
+            this.quaffleBalls.children[i].destroy();
+        }
+    }
+    
+//Iterate over bludgerBalls-group to destroy
+    for (var i=0; i < this.bludgerBalls.children.length; i++) {
+        if ( this.bludgerBalls.children[i].y > (game.height + 200) ) {
+            this.bludgerBalls.children[i].destroy();
         }
     }
 
-//Create the collision callback function 
-    game.physics.arcade.collide(this.balls,this.spells,mainGameState.onBallAndSpellCollision,null,this);
+//Create the collision callback function for spells hitting quaffle Balls
+    game.physics.arcade.collide(this.quaffleBalls,this.spells,mainGameState.onQuaffleBallAndSpellCollision,null,this);
+    
+//Create the collision callback function for spells hitting bludger balls 
+    
+    game.physics.arcade.collide(this.bludgerBalls,this.spells,mainGameState.onBludgerBallAndSpellCollision,null,this);
 
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
@@ -171,7 +187,7 @@ mainGameState.spawnQuaffle = function () {
     quaffleBall.body.velocity.setTo(0,fallSpeed);
     quaffleBall.body.angularVelocity = spinSpeed;
     
-    this.balls.add(quaffleBall);
+    this.quaffleBalls.add(quaffleBall);
     
 }
 
@@ -187,7 +203,7 @@ mainGameState.spawnBludger = function () {
     bludgerBall.body.velocity.setTo(0,fallSpeed);
     bludgerBall.body.angularVelocity = spinSpeed;
     
-    this.balls.add(bludgerBall);
+    this.bludgerBalls.add(bludgerBall);
     
 }
 
@@ -218,6 +234,7 @@ mainGameState.spawnRedSpell = function () {
     this.playerFireSfx[index].play();
 }
 
+
 mainGameState.updateRedSpell = function () {
     
     //Shoot redSpells with Z key every 0.3s
@@ -237,9 +254,22 @@ mainGameState.updateRedSpell = function () {
     
 }
 
-mainGameState.onBallAndSpellCollision = function (ball,spell) {
-    ball.destroy();
-    spell.destroy();
+mainGameState.updateBlueSpell = function () {
+
+}
+
+//Create function for collision of Quaffle balls and spells
+
+mainGameState.onQuaffleBallAndSpellCollision = function (ball,spell) {
+    ball.pendingDestroy = true;
+    spell.pendingDestroy = true;
+}
+
+//Create function for collision of Bludger balls and spells 
+
+mainGameState.onBludgerBallAndSpellCollision = function (ball,spell) {
+    ball.pendingDestroy = true;
+    spell.pendingDestroy = true;
 }
 
 
