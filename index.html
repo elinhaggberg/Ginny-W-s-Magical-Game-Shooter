@@ -5,6 +5,7 @@
     <script src="libs/phaser.min.js"></script>
     <script src="source/maingamestate.js"></script>
     <script src="source/gameoverstate.js"></script>
+    <script src="source/gamestartstate.js"></script>
     </head>
     <body>
         <header class="header">
@@ -20,8 +21,10 @@
         <script>
         var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameContainer'); 
         game.state.add("MainGame", mainGameState);
-        game.state.start("MainGame");
+        //game.state.start("MainGame");
         game.state.add("GameOver", gameOverState);
+        game.state.add("GameStart", gameStartState);
+        game.state.start("GameStart");
         </script>
     </body>
 </html>
