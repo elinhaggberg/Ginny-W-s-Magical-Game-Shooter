@@ -70,6 +70,35 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     
 //Timer for game speed
     this.gameSpeedTimer = 30.0;
+    
+//Variable for player score
+    this.playerScore = 0;
+    
+//Variable for player lives
+    this.playerLife = 3;
+    
+//Add the score and life text sprites
+    var displayOptions = {
+        font: "16px Courier",
+        fill: "#FFFFFF",
+        align: "center"
+    }
+    
+    //Add score title text sprite
+    this.scoreTitle = game.add.text(game.width * 0.80, 30, "SCORE", displayOptions);
+    this.scoreTitle.fixedToCamera = true;
+    
+    //Add score value text sprite
+    this.scoreValue = game.add.text(game.width * 0.855, 50, this.playerScore, displayOptions);
+    this.playerScore.fixedToCamera = true;
+    
+    //Add life label text sprite 
+    this.lifeTitle = game.add.text(game.width * 0.1, 30, "LIVES", displayOptions);
+    this.lifeTitle.fixedToCamera = true;
+    
+    //Add life value text sprite
+    this.lifeValue = game.add.text(game.width * 0.155, 50, this.playerLife, displayOptions);
+    this.lifeValue.fixedToCamera = true;
 
 //Add the player-sprite and set its anchorpoint and scale
     this.playerSprite = game.add.sprite(x,y,'player');
@@ -167,7 +196,7 @@ mainGameState.updateRedSpell();
     
 //Set up the gameSpeedTimer
     this.gameSpeedTimer -= game.time.physicsElapsed;
-    if (this.gameSpeedTimer <= 0.0) {
+    if ( this.gameSpeedTimer <= 0.0 ) {
         this.gameSpeed += 0.3;
         console.log("Game Speed increased");
         console.log(this.gameSpeed);
@@ -189,6 +218,10 @@ mainGameState.updateRedSpell();
     
     game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
 
+    
+//Update the score 
+    
+this.scoreValue.setText(this.playerScore);
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
 }
@@ -294,9 +327,60 @@ mainGameState.updateRedSpell = function () {
 
 //Create function for collision of Quaffle balls and spells
 
-mainGameState.onBallAndSpellCollision = function (ball,spell) {
-    ball.pendingDestroy = true;
-    spell.pendingDestroy = true;
+mainGameState.onBallAndSpellCollision = function (obj1,obj2) {
+    obj1.pendingDestroy = true;
+    obj2.pendingDestroy = true;
+
+    
+    switch (obj1.key) {
+        case "red-spell":
+        var redSpell = obj1;
+        break;
+        case "blue-spell":
+        var blueSpell = obj1;
+        break;
+        case "quaffle":
+        var quaffle = obj1;
+        break;
+        case "bludger":
+        var bludger = obj1;
+        break;
+        default:
+        console.log("Object 1 unknown");
+    }
+    
+    switch (obj2.key) {
+        case "red-spell":
+        var redSpell = obj2;
+        break;
+        case "blue-spell":
+        var blueSpell = obj2;
+        break;
+        case "quaffle":
+        var quaffle = obj2;
+        break;
+        case "bludger":
+        var bludger = obj2;
+        break;
+        default: 
+        console.log("Objekt 2 unknown");
+    }
+    
+    if ( (blueSpell != null) && (quaffle != null) ) {
+        this.playerScore += 5;
+    }
+    
+    if ( this.playerScore >= 10 ) {
+        if ( (blueSpell != null) && (bludger != null) ) {
+            this.playerScore -= 10;
+        }
+    }
+    
+    if ( (redSpell != null) && (bludger != null) ) {
+        this.playerScore += 10;
+    }
+         
+    
 }
 
 //Create function for collision of Snitch ball and spells 
@@ -305,7 +389,13 @@ mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
     obj1.pendingDestroy = true;
     obj2.pendingDestroy = true;
     this.snitchTimer = game.rnd.integerInRange(10,20);
-    console.log(this.snitchTimer);
+    
+    if ( (obj1.key.includes("blue-spell")) || (obj2.key.includes("blue-spell")) ) {
+         this.playerScore+= 100;
+    } 
+    
+   
+    
 }
 
 
