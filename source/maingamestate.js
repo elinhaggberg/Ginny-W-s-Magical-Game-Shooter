@@ -64,6 +64,12 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     
 //Timer for the golden snitch
     this.snitchTimer = 4.0;
+    
+//Timer for game speed
+    this.gameSpeedTimer = 10.0;
+
+//Variable for game speed
+    this.gameSpeed = 1;
 
 //Add the player-sprite and set its anchorpoint and scale
     this.playerSprite = game.add.sprite(x,y,'player');
@@ -166,7 +172,7 @@ mainGameState.spawnQuaffle = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
     var spinSpeed = game.rnd.integerInRange(50,200);
-    var fallSpeed = game.rnd.integerInRange(80,150);
+    var fallSpeed = game.rnd.integerInRange(80,150) * this.gameSpeed;
     var quaffleBall = game.add.sprite(x,0,'quaffle');
     quaffleBall.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(quaffleBall);
@@ -182,7 +188,7 @@ mainGameState.spawnBludger = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
     var spinSpeed = game.rnd.integerInRange(80,250);
-    var fallSpeed = game.rnd.integerInRange(100,200);
+    var fallSpeed = game.rnd.integerInRange(100,200) * this.gameSpeed;
     var bludgerBall = game.add.sprite(x,0,'bludger');
     bludgerBall.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(bludgerBall);
