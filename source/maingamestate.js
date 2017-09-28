@@ -242,6 +242,7 @@ this.lifeValue.setText(this.playerLife);
     
 if (this.playerLife <= 0) {
     game.state.start("GameOver");
+    this.music.stop();
 }
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  

@@ -4,12 +4,17 @@ var gameOverState = { };
 
 gameOverState.preload = function () {
     this.game.load.image("gameover-bg","assets/images/gameover.jpg");
+    this.game.load.audio("harry-potter","assets/music/harry-potter-8bit.WAV");
     
 }
 
 gameOverState.create = function () {
     
     game.add.sprite(0,0,'gameover-bg');
+    this.music = game.add.audio('harry-potter');
+    this.music.play();
+    this.music.volume = 0.3;
+    this.music.loop = true;
     
     var displayOptions = {
         font: "25px courier",
@@ -24,5 +29,11 @@ gameOverState.create = function () {
 }
 
 gameOverState.update = function () {
+    
+    if (game.input.activePointer.isDown) {
+        game.state.start("MainGame");
+        this.music.stop();
+        playerScore = 0;
+    }
     
 }
