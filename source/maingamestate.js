@@ -214,14 +214,22 @@ mainGameState.updateRedSpell();
 //Create the collision callback function for spells hitting balls
     game.physics.arcade.collide(this.balls,this.spells,mainGameState.onBallAndSpellCollision,null,this);
 
-//Create the collision callback function for spells hitting the Snitch 
+//Create the collision callback function for bludger hitting the player 
     
+   game.physics.arcade.overlap(this.balls,this.playerSprite,mainGameState.onBludgerAndPlayerCollision,null,this);
+    
+//Create the collision callback function for spells hitting the snitch
     game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
-
+    
+    
     
 //Update the score 
     
 this.scoreValue.setText(this.playerScore);
+    
+//Update the lives
+    
+this.lifeValue.setText(this.playerLife);
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
 }
@@ -237,6 +245,7 @@ mainGameState.spawnQuaffle = function () {
     game.physics.arcade.enable(quaffleBall);
     quaffleBall.body.velocity.setTo(0,fallSpeed);
     quaffleBall.body.angularVelocity = spinSpeed;
+    quaffleBall.killsPlayer = false;
     
     this.balls.add(quaffleBall);
     
@@ -253,6 +262,7 @@ mainGameState.spawnBludger = function () {
     game.physics.arcade.enable(bludgerBall);
     bludgerBall.body.velocity.setTo(0,fallSpeed);
     bludgerBall.body.angularVelocity = spinSpeed;
+    bludgerBall.killsPlayer = true;
     
     this.balls.add(bludgerBall);
     
@@ -269,6 +279,7 @@ mainGameState.spawnSnitch = function () {
     this.snitchBall.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(this.snitchBall);
     this.snitchBall.body.velocity.setTo(z,z);
+    this.snitchBall.killsPlayer = false;
 }
 
 //Creates the spawnRedSpell function
@@ -394,7 +405,22 @@ mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
          this.playerScore+= 100;
     } 
     
-   
+}
+
+//Create function for collision of bludgers and player
+
+mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
+    
+    if ( obj1.key.includes("player") ) {
+        var ball = obj2;
+    } else {
+        var ball = obj1;
+    }
+    
+    if (ball.killsPlayer == true ) {
+        this.playerLife -= 1;
+        ball.pendingDestroy = true;
+    }
     
 }
 
