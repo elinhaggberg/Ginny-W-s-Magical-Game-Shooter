@@ -32,10 +32,7 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     game.add.sprite(0, 0, 'game-bg');
     
 //Create group for falling Quaffle balls 
-    this.quaffleBalls = game.add.group();
-    
-//Create group for falling Bludger balls
-    this.bludgerBalls = game.add.group();
+    this.balls = game.add.group();
     
 //Create group for fired spells 
     this.spells = game.add.group();
@@ -149,27 +146,16 @@ mainGameState.updateRedSpell();
         }
     }
 
-//Iterate over quaffleBalls-group to destroy
+//Iterate over balls-group to destroy
     
-    for( var i=0; i < this.quaffleBalls.children.length; i++) {
-        if ( this.quaffleBalls.children[i].y > (game.height + 200) ) {
-            this.quaffleBalls.children[i].destroy();
-        }
-    }
-    
-//Iterate over bludgerBalls-group to destroy
-    for (var i=0; i < this.bludgerBalls.children.length; i++) {
-        if ( this.bludgerBalls.children[i].y > (game.height + 200) ) {
-            this.bludgerBalls.children[i].destroy();
+    for( var i=0; i < this.balls.children.length; i++) {
+        if ( this.balls.children[i].y > (game.height + 200) ) {
+            this.balls.children[i].destroy();
         }
     }
 
-//Create the collision callback function for spells hitting quaffle Balls
-    game.physics.arcade.collide(this.quaffleBalls,this.spells,mainGameState.onQuaffleBallAndSpellCollision,null,this);
-    
-//Create the collision callback function for spells hitting bludger balls 
-    
-    game.physics.arcade.collide(this.bludgerBalls,this.spells,mainGameState.onBludgerBallAndSpellCollision,null,this);
+//Create the collision callback function for spells hitting balls
+    game.physics.arcade.collide(this.balls,this.spells,mainGameState.onBallAndSpellCollision,null,this);
 
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
@@ -187,7 +173,7 @@ mainGameState.spawnQuaffle = function () {
     quaffleBall.body.velocity.setTo(0,fallSpeed);
     quaffleBall.body.angularVelocity = spinSpeed;
     
-    this.quaffleBalls.add(quaffleBall);
+    this.balls.add(quaffleBall);
     
 }
 
@@ -203,7 +189,7 @@ mainGameState.spawnBludger = function () {
     bludgerBall.body.velocity.setTo(0,fallSpeed);
     bludgerBall.body.angularVelocity = spinSpeed;
     
-    this.bludgerBalls.add(bludgerBall);
+    this.balls.add(bludgerBall);
     
 }
 
@@ -234,6 +220,18 @@ mainGameState.spawnRedSpell = function () {
     this.playerFireSfx[index].play();
 }
 
+mainGameState.spawnBlueSpell = function () {
+    var x = this.playerSprite.x - 19;
+    var y = this.playerSprite.y + -120;
+    var blueSpell = game.add.sprite(x,y,'blue-spell');
+    game.physics.arcade.enable(blueSpell);
+    blueSpell.body.velocity.setTo(0, -300);
+    this.spells.add(blueSpell);
+    
+    //Adding the soundfx for shooting a spell
+    var index = game.rnd.integerInRange(0, this.playerFireSfx.length - 1);
+    this.playerFireSfx[index].play();
+}
 
 mainGameState.updateRedSpell = function () {
     
@@ -241,6 +239,13 @@ mainGameState.updateRedSpell = function () {
     this.spellTimer -= game.time.physicsElapsed;
     if ( (this.spellTimer <= 0.0) && (this.fireKey.isDown) ) {
         mainGameState.spawnRedSpell();
+        this.spellTimer = 0.3;
+    }
+    
+    //Shoot blueSpells with X key every 0.3s 
+    this.spellTimer -= game.time.physicsElapsed;
+    if ( (this.spellTimer <= 0.0 ) && (this.specialFireKey.isDown) ) {
+        mainGameState.spawnBlueSpell();
         this.spellTimer = 0.3;
     }
     
@@ -254,20 +259,10 @@ mainGameState.updateRedSpell = function () {
     
 }
 
-mainGameState.updateBlueSpell = function () {
-
-}
 
 //Create function for collision of Quaffle balls and spells
 
-mainGameState.onQuaffleBallAndSpellCollision = function (ball,spell) {
-    ball.pendingDestroy = true;
-    spell.pendingDestroy = true;
-}
-
-//Create function for collision of Bludger balls and spells 
-
-mainGameState.onBludgerBallAndSpellCollision = function (ball,spell) {
+mainGameState.onBallAndSpellCollision = function (ball,spell) {
     ball.pendingDestroy = true;
     spell.pendingDestroy = true;
 }
