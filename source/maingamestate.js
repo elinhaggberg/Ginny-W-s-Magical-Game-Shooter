@@ -100,7 +100,7 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.snitchTimer = 4.0;
     
 //Timer for game speed
-    this.gameSpeedTimer = 30.0;
+    this.gameSpeedTimer = 40.0;
     
 //Variable for player lives
     this.playerLife = 3;
@@ -237,10 +237,10 @@ mainGameState.updateRedSpell();
 //Set up the gameSpeedTimer
     this.gameSpeedTimer -= game.time.physicsElapsed;
     if ( this.gameSpeedTimer <= 0.0 ) {
-        this.gameSpeed += 0.3;
+        this.gameSpeed += 0.2;
         console.log("Game Speed increased");
         console.log(this.gameSpeed);
-        this.gameSpeedTimer = 10.0;
+        this.gameSpeedTimer = 20.0;
     }
 
     //Set up the player immunity timer 
