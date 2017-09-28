@@ -85,9 +85,6 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z); 
     this.specialFireKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     
-//Random directions for the snitch
-    this.randomSpeed = game.rnd.integerInRange(-10,10);
-    
 }
 
 // Add the update function 
@@ -113,25 +110,35 @@ mainGameState.updateRedSpell();
         this.playerSprite.body.velocity.x = 0;
     }
     
-//Confinding the Snitch to game screen
+//IF THE SNITCH EXISTS: Confinding the Snitch to game screen
     
-    //var randomSpeedX = game.rnd.integerInRange(200,500);
-    //var randomSpeedY = game.rnd.integerInRange(-300, 600);
     
-    /*if ( (this.snitchBall.x > game.width) && (
-    this.snitchBall.body.velocity.x > 0 ) ) {
+    if ( this.snitchBall != null ) {
+    
+        if ( (this.snitchBall.x > game.width + 100) && (
+        this.snitchBall.body.velocity.x > 0 ) ) {
+
+            this.snitchBall.body.velocity.x = -this.randomSpeed;
+
+        } 
         
-        console.log("SNICTH! STAAAPHW!")
+        if ( (this.snitchBall.x < -100 ) && ( this.snitchBall.body.velocity.x < 0 ) ) {
+            this.snitchBall.body.velocity.x = this.randomSpeed;
+        }
         
-        //this.snitchBall.body.velocity.x = -randomSpeedX;
-        //this.snitchBall.body.velocity.y = randomSpeedY;
-    } */
+        if ( (this.snitchBall.y > game.height + 100) && (this.snitchBall.body.velocity.y > 0 )) {
+            this.snitchBall.body.velocity.y = -this.randomSpeed;
+        }
+        
+        if ( (this.snitchBall.y < -100 ) && (this.snitchBall.body.velocity.y < 0 )) {
+            this.snitchBall.body.velocity.y = this.randomSpeed;
+        }
+        
+    }
     
-   /* if ( (this.snitchBall.x < -30 ) && ( 
-    this.snitchBall.body.velocity.x < 0 ) ) {
-        this.snitchBall.body.velocity.x = randomSpeedX;
-        this.snitchBall.body.velocity.y = randomSpeedY;
-    } */
+//Set up the random speed variable for the snitch
+    
+    this.randomSpeed = game.rnd.integerInRange(200,450);
 
 //Set up the ballTimer 
     this.ballTimer -= game.time.physicsElapsed;
@@ -178,6 +185,10 @@ mainGameState.updateRedSpell();
 //Create the collision callback function for spells hitting balls
     game.physics.arcade.collide(this.balls,this.spells,mainGameState.onBallAndSpellCollision,null,this);
 
+//Create the collision callback function for spells hitting the Snitch 
+    
+    game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
+
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
 }
@@ -221,10 +232,10 @@ mainGameState.spawnSnitch = function () {
     var x = game.rnd.integerInRange(0,game.width);
     var y = game.rnd.integerInRange(0,game.height);
     var z = this.randomSpeed;
-    var snitchBall = game.add.sprite(50,-300,'snitch');
-    snitchBall.anchor.setTo(0.5,0.5);
-    game.physics.arcade.enable(snitchBall);
-    snitchBall.body.velocity.setTo(10,0);
+    this.snitchBall = game.add.sprite(50,300,'snitch');
+    this.snitchBall.anchor.setTo(0.5,0.5);
+    game.physics.arcade.enable(this.snitchBall);
+    this.snitchBall.body.velocity.setTo(z,z);
 }
 
 //Creates the spawnRedSpell function
@@ -286,6 +297,15 @@ mainGameState.updateRedSpell = function () {
 mainGameState.onBallAndSpellCollision = function (ball,spell) {
     ball.pendingDestroy = true;
     spell.pendingDestroy = true;
+}
+
+//Create function for collision of Snitch ball and spells 
+
+mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
+    obj1.pendingDestroy = true;
+    obj2.pendingDestroy = true;
+    this.snitchTimer = game.rnd.integerInRange(10,20);
+    console.log(this.snitchTimer);
 }
 
 
