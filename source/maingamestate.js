@@ -238,6 +238,12 @@ this.scoreValue.setText(this.playerScore);
 //Update the lives
     
 this.lifeValue.setText(this.playerLife);
+    
+//Switch to Game over state at end of lives
+    
+if (this.playerLife <= 0) {
+    game.state.start("GameOver");
+}
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
 }
