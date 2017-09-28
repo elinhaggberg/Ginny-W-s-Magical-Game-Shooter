@@ -307,9 +307,9 @@ mainGameState.spawnBludger = function () {
 mainGameState.spawnSnitch = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
-    var y = game.rnd.integerInRange(0,game.height);
+    var y = game.rnd.integerInRange(0, -game.height);
     var z = this.randomSpeed;
-    this.snitchBall = game.add.sprite(50,300,'snitch');
+    this.snitchBall = game.add.sprite(x,y,'snitch');
     this.snitchBall.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(this.snitchBall);
     this.snitchBall.body.velocity.setTo(z,z);
