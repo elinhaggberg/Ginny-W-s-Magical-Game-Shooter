@@ -56,6 +56,9 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     var x = game.width * 0.5;
     var y = game.height * 0.8;
     
+//Variable for game speed
+    this.gameSpeed = 1;    
+    
 //Timer for balls 
     this.ballTimer = 2.0;
     
@@ -66,10 +69,7 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.snitchTimer = 4.0;
     
 //Timer for game speed
-    this.gameSpeedTimer = 10.0;
-
-//Variable for game speed
-    this.gameSpeed = 1;
+    this.gameSpeedTimer = 30.0;
 
 //Add the player-sprite and set its anchorpoint and scale
     this.playerSprite = game.add.sprite(x,y,'player');
@@ -138,7 +138,13 @@ mainGameState.updateRedSpell();
     if (this.ballTimer <= 0.0) {
         mainGameState.spawnQuaffle();
         mainGameState.spawnBludger();
-        this.ballTimer = 2.0;
+        if (this.gameSpeed < 2) {
+        this.ballTimer = 2.0 - (this.gameSpeed/2);
+        } else {
+        this.ballTimer = 1.0;
+        }
+        
+        console.log(this.ballTimer);
     }
     
     
@@ -150,6 +156,15 @@ mainGameState.updateRedSpell();
             mainGameState.spawnSnitch();
             this.snitchTimer = null;
         }
+    }
+    
+//Set up the gameSpeedTimer
+    this.gameSpeedTimer -= game.time.physicsElapsed;
+    if (this.gameSpeedTimer <= 0.0) {
+        this.gameSpeed += 0.3;
+        console.log("Game Speed increased");
+        console.log(this.gameSpeed);
+        this.gameSpeedTimer = 10.0;
     }
 
 //Iterate over balls-group to destroy
@@ -206,10 +221,10 @@ mainGameState.spawnSnitch = function () {
     var x = game.rnd.integerInRange(0,game.width);
     var y = game.rnd.integerInRange(0,game.height);
     var z = this.randomSpeed;
-    var snitchBall = game.add.sprite(x,y,'snitch');
+    var snitchBall = game.add.sprite(50,-300,'snitch');
     snitchBall.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(snitchBall);
-    snitchBall.body.velocity.setTo(z,z);
+    snitchBall.body.velocity.setTo(10,0);
 }
 
 //Creates the spawnRedSpell function
