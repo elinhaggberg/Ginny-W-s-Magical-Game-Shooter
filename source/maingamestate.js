@@ -1,6 +1,8 @@
 //Create an empty object
 var mainGameState = { };
 
+var playerScore = 0;
+
 // Add the preload function 
 mainGameState.preload = function () {
     console.log("Pre-loading the Game");
@@ -71,9 +73,6 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Timer for game speed
     this.gameSpeedTimer = 30.0;
     
-//Variable for player score
-    this.playerScore = 0;
-    
 //Variable for player lives
     this.playerLife = 3;
     
@@ -92,8 +91,8 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.scoreTitle.fixedToCamera = true;
     
     //Add score value text sprite
-    this.scoreValue = game.add.text(game.width * 0.855, 50, this.playerScore, displayOptions);
-    this.playerScore.fixedToCamera = true;
+    this.scoreValue = game.add.text(game.width * 0.855, 50, playerScore, displayOptions);
+    playerScore.fixedToCamera = true;
     
     //Add life label text sprite 
     this.lifeTitle = game.add.text(game.width * 0.1, 30, "LIVES", displayOptions);
@@ -233,7 +232,7 @@ mainGameState.updateRedSpell();
     
 //Update the score 
     
-this.scoreValue.setText(this.playerScore);
+this.scoreValue.setText(playerScore);
     
 //Update the lives
     
@@ -392,17 +391,17 @@ mainGameState.onBallAndSpellCollision = function (obj1,obj2) {
     }
     
     if ( (blueSpell != null) && (quaffle != null) ) {
-        this.playerScore += 5;
+        playerScore += 5;
     }
     
-    if ( this.playerScore >= 10 ) {
+    if ( playerScore >= 10 ) {
         if ( (blueSpell != null) && (bludger != null) ) {
-            this.playerScore -= 10;
+            playerScore -= 10;
         }
     }
     
     if ( (redSpell != null) && (bludger != null) ) {
-        this.playerScore += 10;
+        playerScore += 10;
     }
          
     
@@ -416,7 +415,7 @@ mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
     this.snitchTimer = game.rnd.integerInRange(10,20);
     
     if ( (obj1.key.includes("blue-spell")) || (obj2.key.includes("blue-spell")) ) {
-         this.playerScore+= 100;
+         playerScore+= 100;
     } 
     
 }
