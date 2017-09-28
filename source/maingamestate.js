@@ -15,6 +15,7 @@ mainGameState.preload = function () {
     this.game.load.image("red-spell", "assets/images/red-spell.png");
     this.game.load.image("blue-spell", "assets/images/blue-spell.png");
     this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
+    this.game.load.audio("game-over-sound","assets/audio/gameover.wav");
     //Load all shooting effects
     this.game.load.audio("player-fire-01","assets/audio/player_fire_01.mp3");
     this.game.load.audio("player-fire-02","assets/audio/player_fire_02.mp3");
@@ -72,6 +73,9 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     
 //Create the snitch hit soundfx
     this.snitchHitSfx = game.add.audio('snitch-hit');
+    
+//Create the game over soundfx
+    this.gameOverSfx = game.add.audio('game-over-sound');
     
 //Add the background music
     this.music = game.add.audio('game-music');
@@ -279,6 +283,8 @@ if (this.playerLife <= 0) {
         if (this.gameOverTimer <= 0) {
         game.state.start("GameOver");
         this.music.stop();
+        this.gameOverSfx.play();
+        this.gameOverSfx.volume = 0.3;
         }
 }
 
