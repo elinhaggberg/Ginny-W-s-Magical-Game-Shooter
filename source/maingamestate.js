@@ -77,6 +77,9 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Variable for player lives
     this.playerLife = 3;
     
+//Timer for player immunity to damage
+    this.playerImmunityTimer = 0;
+    
 //Add the score and life text sprites
     var displayOptions = {
         font: "16px Courier",
@@ -203,6 +206,11 @@ mainGameState.updateRedSpell();
         this.gameSpeedTimer = 10.0;
     }
 
+    //Set up the player immunity timer 
+    
+    this.playerImmunityTimer -= game.time.physicsElapsed;
+
+    
 //Iterate over balls-group to destroy
     
     for( var i=0; i < this.balls.children.length; i++) {
@@ -417,8 +425,11 @@ mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
         var ball = obj1;
     }
     
-    if (ball.killsPlayer == true ) {
+    if ( (ball.killsPlayer == true) && (this.playerImmunityTimer <= 0 ) ) {
         this.playerLife -= 1;
+        ball.pendingDestroy = true;
+        this.playerImmunityTimer = 1.0;
+    } else if ( (ball.killsPlayer == true) && (this.playerImmunityTimer > 0) ) {
         ball.pendingDestroy = true;
     }
     
