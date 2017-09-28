@@ -13,7 +13,8 @@ mainGameState.preload = function () {
     this.game.load.image("bludger", "assets/images/bludger.png")
     this.game.load.image("snitch", "assets/images/snitch.png")
     this.game.load.image("red-spell", "assets/images/red-spell.png");
-    this.game.load.image("blue-spell", "assets/images/blue-spell.png")
+    this.game.load.image("blue-spell", "assets/images/blue-spell.png");
+    this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
     //Load all shooting effects
     this.game.load.audio("player-fire-01","assets/audio/player_fire_01.mp3");
     this.game.load.audio("player-fire-02","assets/audio/player_fire_02.mp3");
@@ -99,6 +100,9 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
 //Timer for player immunity to damage
     this.playerImmunityTimer = 0;
     
+//Timer before moving to Game over screen
+    this.gameOverTimer = 0.5;
+    
 //Add the score and life text sprites
     var displayOptions = {
         font: "16px Courier",
@@ -135,6 +139,12 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.cursors = game.input.keyboard.createCursorKeys();
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z); 
     this.specialFireKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
+    
+//For explosions
+    
+    this.emitter = game.add.emitter(0,0, 100);
+    this.emitter.makeParticles('explosion-yellow');
+    this.emitter.gravity = 200;
     
 }
 
@@ -261,8 +271,11 @@ this.lifeValue.setText(this.playerLife);
 //Switch to Game over state at end of lives
     
 if (this.playerLife <= 0) {
-    game.state.start("GameOver");
-    this.music.stop();
+    this.gameOverTimer -= game.time.physicsElapsed;
+        if (this.gameOverTimer <= 0) {
+        game.state.start("GameOver");
+        this.music.stop();
+        }
 }
 
 // STAY INSIDE THE FUNCTION, ELIN!!!!!  
@@ -461,6 +474,7 @@ mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
         this.playerImmunityTimer = 1.0;
         //Play player hit soundfx
        this.playerHitsfx.play();
+        this.explosion(ball);
         
     } else if ( (ball.killsPlayer == true) && (this.playerImmunityTimer > 0) ) {
         ball.pendingDestroy = true;
@@ -468,4 +482,12 @@ mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
     
 }
 
+mainGameState.explosion = function (ballPosition) {
+    
+    this.emitter.x = ballPosition.x;
+    this.emitter.y = ballPosition.y;
+    
+    this.emitter.start(true, 2000, null, 20);
+    
+}
 
