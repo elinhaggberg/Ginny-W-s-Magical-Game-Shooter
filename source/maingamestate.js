@@ -30,6 +30,7 @@ mainGameState.preload = function () {
     this.game.load.audio("ball-hit-05","assets/audio/asteroid_hit_05.mp3");
     this.game.load.audio("ball-hit-06","assets/audio/asteroid_hit_06.mp3");
     this.game.load.audio("player-hit","assets/audio/player_hit_01.mp3");
+    this.game.load.audio("snitch-hit","assets/audio/snitch-ding.mp3");
 }
 
 //Add the create function 
@@ -68,6 +69,9 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     
 //Create the player hitting soundfx
     this.playerHitsfx = game.add.audio("player-hit");
+    
+//Create the snitch hit soundfx
+    this.snitchHitSfx = game.add.audio('snitch-hit');
     
 //Add the background music
     this.music = game.add.audio('game-music');
@@ -451,6 +455,8 @@ mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
     obj1.pendingDestroy = true;
     obj2.pendingDestroy = true;
     this.snitchTimer = game.rnd.integerInRange(10,20);
+    this.snitchHitSfx.play();
+    this.snitchHitSfx.volume = 0.3;
     
     if ( (obj1.key.includes("blue-spell")) || (obj2.key.includes("blue-spell")) ) {
          playerScore+= 100;
