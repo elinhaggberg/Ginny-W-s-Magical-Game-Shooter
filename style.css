@@ -1,16 +1,16 @@
 body {
-    background-color: forestgreen;
+    background-color: #000000;
     padding: 0;
 }
 
 .header {
-    background-color: beige;
+    background-color: #000000;
     text-align: center;
     padding: 5px;
 }
 
 .main {
-    background-color: #fffff;  
+    background-color: #000000;  
 }
 
 canvas {
@@ -18,25 +18,21 @@ canvas {
 }
 
 .footer {
-    background-color: beige;
-    padding: 1em;
+    background-color: #000000;
+    padding: 3px;
     text-align: center;
-    color: #666;
+    color: #f2f2f2;
 }
 
 .footer p {
-    font-family: "Helvetica", sans-serif;
+    font-family: "Courier", sans-serif;
     font-size: 11px;
 }
 
 h1 {
-    font-family: "Georgia", serif;
-    text-shadow: 2px 2px 3px #f2f;
+    font-family: "Courier", serif;
+    text-shadow: 2px 2px 3px #666;
+    font-size: 110%;
+    color: #f2f2f2;
 }
 
-.subtitle {
-    font-size: 100%;
-    font-weight: normal;
-    font-family: "Helvetica", sans-serif;
-    color: #666;
-}
