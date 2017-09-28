@@ -21,6 +21,14 @@ mainGameState.preload = function () {
     this.game.load.audio("player-fire-04","assets/audio/player_fire_04.mp3");
     this.game.load.audio("player-fire-05","assets/audio/player_fire_05.mp3");
     this.game.load.audio("player-fire-06","assets/audio/player_fire_06.mp3");
+    //Load all hit effects 
+    this.game.load.audio("ball-hit-01","assets/audio/asteroid_hit_01.mp3");
+    this.game.load.audio("ball-hit-02","assets/audio/asteroid_hit_02.mp3");
+    this.game.load.audio("ball-hit-03","assets/audio/asteroid_hit_03.mp3");
+    this.game.load.audio("ball-hit-04","assets/audio/asteroid_hit_04.mp3");
+    this.game.load.audio("ball-hit-05","assets/audio/asteroid_hit_05.mp3");
+    this.game.load.audio("ball-hit-06","assets/audio/asteroid_hit_06.mp3");
+    this.game.load.audio("player-hit","assets/audio/player_hit_01.mp3");
 }
 
 //Add the create function 
@@ -47,6 +55,18 @@ game.physics.startSystem(Phaser.Physics.ARCADE);
     this.playerFireSfx.push(game.add.audio("player-fire-04"));
     this.playerFireSfx.push(game.add.audio("player-fire-05"));
     this.playerFireSfx.push(game.add.audio("player-fire-06"));
+    
+//Create the ball hitting soundfx
+    this.ballHitSfx = [];
+    this.ballHitSfx.push(game.add.audio("ball-hit-01"));
+    this.ballHitSfx.push(game.add.audio("ball-hit-02"));
+    this.ballHitSfx.push(game.add.audio("ball-hit-03"));
+    this.ballHitSfx.push(game.add.audio("ball-hit-04"));
+    this.ballHitSfx.push(game.add.audio("ball-hit-05"));
+    this.ballHitSfx.push(game.add.audio("ball-hit-06"));
+    
+//Create the player hitting soundfx
+    this.playerHitsfx = game.add.audio("player-hit");
     
 //Add the background music
     this.music = game.add.audio('game-music');
@@ -356,6 +376,10 @@ mainGameState.onBallAndSpellCollision = function (obj1,obj2) {
     obj1.pendingDestroy = true;
     obj2.pendingDestroy = true;
 
+    //Adding the soundfx for shooting a spell
+    var index = game.rnd.integerInRange(0, this.ballHitSfx.length - 1);
+    this.ballHitSfx[index].play();
+    this.ballHitSfx[index].volume = 0.3;
     
     switch (obj1.key) {
         case "red-spell":
@@ -435,6 +459,9 @@ mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
         this.playerLife -= 1;
         ball.pendingDestroy = true;
         this.playerImmunityTimer = 1.0;
+        //Play player hit soundfx
+       this.playerHitsfx.play();
+        
     } else if ( (ball.killsPlayer == true) && (this.playerImmunityTimer > 0) ) {
         ball.pendingDestroy = true;
     }
