@@ -101,6 +101,10 @@ mainGameState.create = function() {
         this.instructionsButton.scale.setTo(0.8);
     };
     
+    if ( !(game.device.desktop) ) {
+        this.instructionsButton = game.add.button(game.width/2,game.height - 30, 'instructions-button',this.actionOnClick, this, 2, 1, 0);
+    };
+    
     //Create the blue and red fire buttons
     if ( !(game.device.desktop) ) {
     this.redButton = game.add.button(40, game.height - 60,'red-button', mainGameState.fireButtonClick, this, 2, 1, 0);
