@@ -17,6 +17,7 @@ mainGameState.preload = function () {
     this.game.load.image("red-spell", "assets/images/red-spell.png");
     this.game.load.image("blue-spell", "assets/images/blue-spell.png");
     this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
+    this.game.load.image("instructions-button","assets/images/instructions-button.png");
 
     //Load audio 
     this.game.load.audio("game-music", "assets/music/harry-potter-8bit.WAV");
@@ -90,7 +91,11 @@ mainGameState.create = function() {
     this.music = game.add.audio('game-music');
     this.music.play();
     this.music.volume = 0.5;
-    this.music.loop = true;
+    this.music.loopFull = true;
+    
+    //Create the instructions button
+    this.instructionsButton = game.add.button(0,game.height - 30,'instructions-button', this.actionOnClick, this, 2, 1, 0);
+    this.instructionsButton.scale.setTo(0.8);
     
     //Add coordinate-variables that uses game width and height for the player sprite  
     var x = game.width * 0.5;
@@ -523,3 +528,7 @@ mainGameState.explosion = function (ballPosition) {
     
 };
 
+//Create the function for the Instructions button
+mainGameState.actionOnClick = function () {
+    game.state.start("InstructionsState");
+};
