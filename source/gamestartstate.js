@@ -36,9 +36,6 @@ gameStartState.update = function () {
         
         this.imageChangeTimer = 0.5;
         
-        console.log(this.index);
-        console.log("Byt bild");
-        
     }
     
     if ( (game.input.activePointer.isDown) && ( this.index == this.gameStartScreens.length ) && (this.imageChangeTimer <= 0) ) {
