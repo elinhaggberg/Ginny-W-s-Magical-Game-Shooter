@@ -198,9 +198,9 @@ mainGameState.update = function() {
         console.log("MOVE");
     }
     
-   if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x <= game.width/2) ) {
+   if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x <= game.width/2) && (game.input.pointer1.position.y < game.height - 100) ) {
         this.playerSprite.body.velocity.x = -300;
-    } else if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x >= game.width/2) ) {
+    } else if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x >= game.width/2) && (game.input.pointer1.position.y < game.height - 100) ) {
         this.playerSprite.body.velocity.x = 300;
     } 
     
