@@ -22,8 +22,8 @@ mainGameState.preload = function () {
     this.game.load.image("red-button","assets/images/red-button.png");
 
     //Load audio 
-    this.game.load.audio("game-music", "assets/music/harry-potter-8bit.WAV");
-    this.game.load.audio("game-over-sound","assets/audio/gameover.wav");
+    this.game.load.audio("game-music", "assets/music/harry-potter-8bit.mp3");
+    this.game.load.audio("game-over-sound","assets/audio/gameover_01.mp3");
     
     //Load all shooting effects
     this.game.load.audio("player-fire-01","assets/audio/player_fire_01.mp3");
@@ -554,6 +554,7 @@ mainGameState.explosion = function (ballPosition) {
 //Create the function for the Instructions button
 mainGameState.actionOnClick = function () {
     game.state.start("InstructionsState");
+    this.music.stop();
 };
 
 //Create the function for the fire buttons on MOBILE 

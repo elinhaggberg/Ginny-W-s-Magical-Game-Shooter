@@ -5,7 +5,7 @@ var gameOverState = { };
 gameOverState.preload = function () {
     //Load all assets
     this.game.load.image("gameover-bg","assets/images/gameover.jpg");
-    this.game.load.audio("harry-potter","assets/music/harry-potter-8bit.WAV");
+    this.game.load.audio("harry-potter","assets/music/harry-potter-8bit.mp3");
     this.game.load.image("snitch", "assets/images/snitch.png");
     
 };

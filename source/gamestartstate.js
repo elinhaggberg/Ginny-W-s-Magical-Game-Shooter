@@ -8,7 +8,7 @@ gameStartState.preload = function () {
     this.game.load.image("gamestart-4","assets/images/start-screen-4.jpg")
     this.game.load.image("snitch", "assets/images/snitch.png");
     //Load the music
-    this.game.load.audio("harry-potter","assets/music/harry-potter-8bit.WAV");
+    this.game.load.audio("harry-potter","assets/music/harry-potter-8bit.mp3");
 }
 
 gameStartState.create = function () {
