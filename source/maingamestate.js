@@ -18,6 +18,8 @@ mainGameState.preload = function () {
     this.game.load.image("blue-spell", "assets/images/blue-spell.png");
     this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
     this.game.load.image("instructions-button","assets/images/instructions-button.png");
+    this.game.load.image("blue-button","assets/images/blue-button.png");
+    this.game.load.image("red-button","assets/images/red-button.png");
 
     //Load audio 
     this.game.load.audio("game-music", "assets/music/harry-potter-8bit.WAV");
@@ -49,6 +51,8 @@ mainGameState.create = function() {
     //Load the Physics system
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+    game.input.pointer1.active = true;
 
     //Add the background
     //game.add.sprite(0, 0, 'game-bg');
@@ -94,8 +98,14 @@ mainGameState.create = function() {
     this.music.loopFull = true;
     
     //Create the instructions button
-    this.instructionsButton = game.add.button(0,game.height - 30,'instructions-button', this.actionOnClick, this, 2, 1, 0);
-    this.instructionsButton.scale.setTo(0.8);
+    if (game.device.desktop) {
+        this.instructionsButton = game.add.button(0,game.height - 30,'instructions-button', this.actionOnClick, this, 2, 1, 0);
+        this.instructionsButton.scale.setTo(0.8);
+    };
+    
+    //Create the blue and red fire buttons
+    this.redButton = game.add.button(40, game.height - 60,'red-button', mainGameState.fireButtonClick, this, 2, 1, 0);
+    this.blueButton = game.add.button(game.width - 100, game.height - 60, 'blue-button', mainGameState.fireButtonClick, this, 2, 1, 0);
     
     //Add coordinate-variables that uses game width and height for the player sprite  
     var x = game.width * 0.5;
@@ -162,6 +172,7 @@ mainGameState.create = function() {
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z); 
     this.specialFireKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     
+    
     //For explosions
     this.emitter = game.add.emitter(0,0, 100);
     this.emitter.makeParticles('explosion-yellow');
@@ -180,6 +191,20 @@ mainGameState.update = function() {
     } else {
         this.playerSprite.body.velocity.x= 0;
     }
+    
+    //Setting up the mobile controls '
+    
+    if (game.input.pointer1.isDown) {
+        console.log("MOVE");
+    }
+    
+    if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x <= game.width/2) ) {
+        this.playerSprite.body.velocity.x = -300;
+    } else if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x >= game.width/2) ) {
+        this.playerSprite.body.velocity.x = 300;
+    } else {
+        this.playerSprite.body.velocity.x = 0;
+    } 
     
     //Make the background move
     this.tileSprite.tilePosition.y += 0.4 * this.gameSpeed;
@@ -293,7 +318,6 @@ mainGameState.update = function() {
             this.gameOverSfx.volume = 0.3;
             }
     }
-
 
 }; //Ends the update-function
 
@@ -531,4 +555,22 @@ mainGameState.explosion = function (ballPosition) {
 //Create the function for the Instructions button
 mainGameState.actionOnClick = function () {
     game.state.start("InstructionsState");
+};
+
+//Create the function for the fire buttons on MOBILE 
+mainGameState.fireButtonClick = function(button) {
+    console.log(button);
+    if ( (button.key == "red-button") && (this.spellTimer <= 0.0) ) {
+        //Shoot redSpells with red key every 0.3s
+        this.spellTimer -= game.time.physicsElapsed;
+            mainGameState.spawnRedSpell();
+            this.spellTimer = 0.2;
+        console.log("FIRE RED");
+    } else if ( ( button.key == "blue-button" ) && (this.spellTimer <= 0.0) ) { 
+        //Shoot blueSpells with blue button every 0.3s 
+        this.spellTimer -= game.time.physicsElapsed;
+            mainGameState.spawnBlueSpell();
+            this.spellTimer = 0.2;
+        console.log("FIRE BLUE");
+    }
 };
