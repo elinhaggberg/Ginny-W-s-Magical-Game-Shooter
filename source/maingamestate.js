@@ -102,7 +102,7 @@ mainGameState.create = function() {
     };
     
     if ( !(game.device.desktop) ) {
-        this.instructionsButton = game.add.button(game.width / 2,game.height - 30, 'instructions-button',this.actionOnClick, this, 2, 1, 0);
+        this.instructionsButton = game.add.button(game.width / 2,game.height - 20, 'instructions-button',this.actionOnClick, this, 2, 1, 0);
         this.instructionsButton.anchor.setTo(0.5,0.5);
         this.instructionsButton.scale.setTo(0.8);
     };
