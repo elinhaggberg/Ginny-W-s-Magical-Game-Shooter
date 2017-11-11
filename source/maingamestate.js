@@ -22,7 +22,7 @@ mainGameState.preload = function () {
     this.game.load.image("red-button","assets/images/red-button.png");
 
     //Load audio 
-   // this.game.load.audio("game-music", "assets/music/harry-potter-8bit.mp3");
+    this.game.load.audio("game-music", "assets/music/harry-potter-8bit.mp3");
     this.game.load.audio("game-over-sound","assets/audio/gameover_01.mp3");
     
     //Load all shooting effects
@@ -90,10 +90,10 @@ mainGameState.create = function() {
     this.gameOverSfx = game.add.audio('game-over-sound');
     
     //Add the background music
-  /*  this.music = game.add.audio('game-music');
+   this.music = game.add.audio('game-music');
     this.music.play();
     this.music.volume = 0.5;
-    this.music.loopFull = true;*/
+    this.music.loopFull = true;
     
     //Create the instructions button
     if (game.device.desktop) {
