@@ -255,7 +255,7 @@ mainGameState.update = function() {
 
     //Set up the ballTimer which decreases with the gameSpeed
     this.ballTimer -= game.time.physicsElapsed;
-    if (this.ballTimer <= 0.0) {
+    /*if (this.ballTimer <= 0.0) {
         mainGameState.spawnQuaffle();
         mainGameState.spawnBludger();
         if (this.gameSpeed < 2) {
@@ -265,7 +265,7 @@ mainGameState.update = function() {
         }
         
         console.log(this.ballTimer);
-    }
+    }*/
     
     
     //Set up the snitchTimer for randomizing when the snitch appears
@@ -327,7 +327,7 @@ mainGameState.update = function() {
 }; //Ends the update-function
 
 //Create the spawnQuaffle function 
-mainGameState.spawnQuaffle = function () {
+/*mainGameState.spawnQuaffle = function () {
     
     var x = game.rnd.integerInRange(0,game.width);
     var spinSpeed = game.rnd.integerInRange(50,200);
@@ -341,7 +341,7 @@ mainGameState.spawnQuaffle = function () {
     
     this.balls.add(quaffleBall);
     
-};
+};*/
 
 //Creates the spawnBludger function
 mainGameState.spawnBludger = function () {
