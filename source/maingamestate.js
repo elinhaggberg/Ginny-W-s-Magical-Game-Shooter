@@ -149,20 +149,20 @@ mainGameState.create = function() {
     }
     
     //Add score title text sprite
-    this.scoreTitle = game.add.text(game.width * 0.80, 30, "SCORE", displayOptions);
-    this.scoreTitle.fixedToCamera = true;
+   /* this.scoreTitle = game.add.text(game.width * 0.80, 30, "SCORE", displayOptions);
+    this.scoreTitle.fixedToCamera = true;*/
     
     //Add score value text sprite
-    this.scoreValue = game.add.text(game.width * 0.855, 50, playerScore, displayOptions);
-    playerScore.fixedToCamera = true;
+   /* this.scoreValue = game.add.text(game.width * 0.855, 50, playerScore, displayOptions);
+    playerScore.fixedToCamera = true;*/
     
     //Add life label text sprite 
-    this.lifeTitle = game.add.text(game.width * 0.1, 30, "LIVES", displayOptions);
-    this.lifeTitle.fixedToCamera = true;
+   /* this.lifeTitle = game.add.text(game.width * 0.1, 30, "LIVES", displayOptions);
+    this.lifeTitle.fixedToCamera = true;*/
     
     //Add life value text sprite
-    this.lifeValue = game.add.text(game.width * 0.155, 50, this.playerLife, displayOptions);
-    this.lifeValue.fixedToCamera = true;
+   /* this.lifeValue = game.add.text(game.width * 0.155, 50, this.playerLife, displayOptions);
+    this.lifeValue.fixedToCamera = true;*/
 
     //Add the player-sprite and set its anchorpoint and scale
     this.playerSprite = game.add.sprite(x,y,'player');
