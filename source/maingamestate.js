@@ -8,7 +8,7 @@ mainGameState.preload = function () {
     console.log("Pre-loading the Game");
     
     //Load all the image sprites
-    this.game.load.image("game-bg", "assets/images/ginny-w-bg.jpg");
+    //this.game.load.image("game-bg", "assets/images/ginny-w-bg.jpg");
     this.game.load.image("tile-bg", "assets/images/bg-tile-2.jpg");
     this.game.load.image("player", "assets/images/ginny-w-player.png");
     this.game.load.image("quaffle", "assets/images/quaffle.png");
@@ -53,8 +53,8 @@ mainGameState.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //Add the background
-    //game.add.sprite(0, 0, 'game-bg');
-    //this.tileSprite = game.add.tileSprite(0,0,401,601,'tile-bg');
+    game.add.sprite(0, 0, 'game-bg');
+    this.tileSprite = game.add.tileSprite(0,0,401,601,'tile-bg');
 
     //Create group for falling Quaffle balls 
     this.balls = game.add.group();
@@ -212,7 +212,7 @@ mainGameState.update = function() {
     
     
     //Make the background move
-    //this.tileSprite.tilePosition.y += 0.4 * this.gameSpeed;
+    this.tileSprite.tilePosition.y += 0.4 * this.gameSpeed;
     
     //Run the updateRedSpell function that drives the spells
     mainGameState.updateRedSpell();
