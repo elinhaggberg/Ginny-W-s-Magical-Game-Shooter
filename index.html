@@ -18,7 +18,7 @@
             <p>Created by Elin Häggberg @ Tjejer Kodar 2017</p>
         </footer>
         <script>
-            var game = new Phaser.Game(400, 600, Phaser.WEBGL, 'gameContainer'); 
+            var game = new Phaser.Game(400, 600, Phaser.canvas, 'gameContainer'); 
             game.state.add("MainGame", mainGameState);
             //game.state.start("MainGame");
             game.state.add("GameOver", gameOverState);
