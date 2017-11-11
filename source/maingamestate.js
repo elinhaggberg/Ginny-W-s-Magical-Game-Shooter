@@ -5,7 +5,6 @@ var playerScore = 0;
 
 // Add the preload function 
 mainGameState.preload = function () {
-    console.log("Pre-loading the Game");
     
     //Load all the image sprites
     //this.game.load.image("game-bg", "assets/images/ginny-w-bg.jpg");
@@ -17,7 +16,7 @@ mainGameState.preload = function () {
     this.game.load.image("red-spell", "assets/images/red-spell.png");
     this.game.load.image("blue-spell", "assets/images/blue-spell.png");
     this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
-    //this.game.load.image("instructions-button","assets/images/instructions-button.png");
+    this.game.load.image("instructions-button","assets/images/instructions-button.png");
     this.game.load.image("blue-button","assets/images/blue-button.png");
     this.game.load.image("red-button","assets/images/red-button.png");
 
@@ -96,7 +95,7 @@ mainGameState.create = function() {
     this.music.loopFull = true;
     
     //Create the instructions button
-    /*if (game.device.desktop) {
+    if (game.device.desktop) {
         this.instructionsButton = game.add.button(0,game.height - 30,'instructions-button', this.actionOnClick, this, 2, 1, 0);
         this.instructionsButton.scale.setTo(0.8);
     };
@@ -105,7 +104,7 @@ mainGameState.create = function() {
         this.instructionsButton = game.add.button(game.width / 2,game.height - 20, 'instructions-button',this.actionOnClick, this, 2, 1, 0);
         this.instructionsButton.anchor.setTo(0.5,0.5);
         this.instructionsButton.scale.setTo(0.8);
-    };*/
+    };
     
     //Create the blue and red fire buttons
     if ( !(game.device.desktop) ) {
@@ -200,10 +199,6 @@ mainGameState.update = function() {
     
     //Setting up the mobile controls '
     
-    if (game.input.pointer1.isDown) {
-        console.log("MOVE");
-    }
-    
    if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x <= game.width/2) && (game.input.pointer1.position.y < game.height - 100) ) {
         this.playerSprite.body.velocity.x = -300;
     } else if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x >= game.width/2) && (game.input.pointer1.position.y < game.height - 100) ) {
@@ -264,7 +259,7 @@ mainGameState.update = function() {
         this.ballTimer = 1.0;
         }
         
-        console.log(this.ballTimer);
+        
     }
     
     
@@ -272,7 +267,6 @@ mainGameState.update = function() {
     if (this.snitchTimer != null) {
         this.snitchTimer -= game.time.physicsElapsed;
         if (this.snitchTimer <= 0.0) {
-            console.log("HERE COMES THE SNITCH");
             mainGameState.spawnSnitch();
             this.snitchTimer = null;
         }
@@ -282,8 +276,6 @@ mainGameState.update = function() {
     this.gameSpeedTimer -= game.time.physicsElapsed;
     if ( this.gameSpeedTimer <= 0.0 ) {
         this.gameSpeed += 0.2;
-        console.log("Game Speed increased");
-        console.log(this.gameSpeed);
         this.gameSpeedTimer = 20.0;
     }
 
@@ -558,25 +550,22 @@ mainGameState.explosion = function (ballPosition) {
 };
 
 //Create the function for the Instructions button
-/*mainGameState.actionOnClick = function () {
+mainGameState.actionOnClick = function () {
     game.state.start("InstructionsState");
     this.music.stop();
-};*/
+};
 
 //Create the function for the fire buttons on MOBILE 
 mainGameState.fireButtonClick = function(button) {
-    console.log(button);
     if ( (button.key == "red-button") && (this.spellTimer <= 0.0) ) {
         //Shoot redSpells with red key every 0.3s
         this.spellTimer -= game.time.physicsElapsed;
             mainGameState.spawnRedSpell();
             this.spellTimer = 0.2;
-        console.log("FIRE RED");
     } else if ( ( button.key == "blue-button" ) && (this.spellTimer <= 0.0) ) { 
         //Shoot blueSpells with blue button every 0.3s 
         this.spellTimer -= game.time.physicsElapsed;
             mainGameState.spawnBlueSpell();
             this.spellTimer = 0.2;
-        console.log("FIRE BLUE");
     }
 };
