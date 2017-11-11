@@ -17,7 +17,7 @@ mainGameState.preload = function () {
     this.game.load.image("red-spell", "assets/images/red-spell.png");
     this.game.load.image("blue-spell", "assets/images/blue-spell.png");
     this.game.load.image("explosion-yellow", "assets/images/explosion-yellow.png");
-    this.game.load.image("instructions-button","assets/images/instructions-button.png");
+    //this.game.load.image("instructions-button","assets/images/instructions-button.png");
     this.game.load.image("blue-button","assets/images/blue-button.png");
     this.game.load.image("red-button","assets/images/red-button.png");
 
@@ -96,7 +96,7 @@ mainGameState.create = function() {
     this.music.loopFull = true;
     
     //Create the instructions button
-    if (game.device.desktop) {
+    /*if (game.device.desktop) {
         this.instructionsButton = game.add.button(0,game.height - 30,'instructions-button', this.actionOnClick, this, 2, 1, 0);
         this.instructionsButton.scale.setTo(0.8);
     };
@@ -105,7 +105,7 @@ mainGameState.create = function() {
         this.instructionsButton = game.add.button(game.width / 2,game.height - 20, 'instructions-button',this.actionOnClick, this, 2, 1, 0);
         this.instructionsButton.anchor.setTo(0.5,0.5);
         this.instructionsButton.scale.setTo(0.8);
-    };
+    };*/
     
     //Create the blue and red fire buttons
     if ( !(game.device.desktop) ) {
@@ -558,10 +558,10 @@ mainGameState.explosion = function (ballPosition) {
 };
 
 //Create the function for the Instructions button
-mainGameState.actionOnClick = function () {
+/*mainGameState.actionOnClick = function () {
     game.state.start("InstructionsState");
     this.music.stop();
-};
+};*/
 
 //Create the function for the fire buttons on MOBILE 
 mainGameState.fireButtonClick = function(button) {
