@@ -108,10 +108,10 @@ mainGameState.create = function() {
     };
     
     //Create the blue and red fire buttons
-    if ( !(game.device.desktop) ) {
+    /*if ( !(game.device.desktop) ) {
     this.redButton = game.add.button(40, game.height - 60,'red-button', mainGameState.fireButtonClick, this, 2, 1, 0);
     this.blueButton = game.add.button(game.width - 100, game.height - 60, 'blue-button', mainGameState.fireButtonClick, this, 2, 1, 0);
-    };
+    };*/
     
     //Add coordinate-variables that uses game width and height for the player sprite  
     var x = game.width * 0.5;
@@ -200,7 +200,7 @@ mainGameState.update = function() {
     
     //Setting up the mobile controls '
     
-    if (game.input.pointer1.isDown) {
+   /* if (game.input.pointer1.isDown) {
         console.log("MOVE");
     }
     
@@ -208,7 +208,7 @@ mainGameState.update = function() {
         this.playerSprite.body.velocity.x = -300;
     } else if ( (game.input.pointer1.isDown) && (game.input.pointer1.position.x >= game.width/2) && (game.input.pointer1.position.y < game.height - 100) ) {
         this.playerSprite.body.velocity.x = 300;
-    } 
+    } */
     
     
     //Make the background move
