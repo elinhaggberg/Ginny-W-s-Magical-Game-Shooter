@@ -308,13 +308,13 @@ mainGameState.update = function() {
     game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
     
     //Update the score 
-    this.scoreValue.setText(playerScore);
+    /*this.scoreValue.setText(playerScore);*/
     
     //Update the lives
-    this.lifeValue.setText(this.playerLife);
+    /*this.lifeValue.setText(this.playerLife);*/
     
     //Switch to Game over state at end of lives
-    if (this.playerLife <= 0) {
+    /*if (this.playerLife <= 0) {
         this.gameOverTimer -= game.time.physicsElapsed;
             if (this.gameOverTimer <= 0) {
             game.state.start("GameOver");
@@ -322,7 +322,7 @@ mainGameState.update = function() {
             this.gameOverSfx.play();
             this.gameOverSfx.volume = 0.3;
             }
-    }
+    }*/
 
 }; //Ends the update-function
 
