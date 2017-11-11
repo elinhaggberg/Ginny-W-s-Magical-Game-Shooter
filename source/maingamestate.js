@@ -227,7 +227,7 @@ mainGameState.update = function() {
     }
     
     //IF THE SNITCH EXISTS: Confinding the Snitch to game screen
-    /*if ( this.snitchBall != null ) {
+    if ( this.snitchBall != null ) {
     //Checks to see if the Snitch is in the game
         if ( (this.snitchBall.x > game.width + 100) && (
         //Checks if the Snitch is at the edges of the screen and makes it turn around
@@ -248,10 +248,10 @@ mainGameState.update = function() {
             this.snitchBall.body.velocity.y = this.randomSpeed;
         }
         
-    }*/
+    }
     
     //Set up the random speed variable for the snitch ball
-    //this.randomSpeed = game.rnd.integerInRange(200,450);
+    this.randomSpeed = game.rnd.integerInRange(200,450);
 
     //Set up the ballTimer which decreases with the gameSpeed
     this.ballTimer -= game.time.physicsElapsed;
@@ -269,14 +269,14 @@ mainGameState.update = function() {
     
     
     //Set up the snitchTimer for randomizing when the snitch appears
-    /*if (this.snitchTimer != null) {
+    if (this.snitchTimer != null) {
         this.snitchTimer -= game.time.physicsElapsed;
         if (this.snitchTimer <= 0.0) {
             console.log("HERE COMES THE SNITCH");
             mainGameState.spawnSnitch();
             this.snitchTimer = null;
         }
-    }*/
+    }
     
     //Set up the gameSpeedTimer which makes the game go faster and faster
     this.gameSpeedTimer -= game.time.physicsElapsed;
@@ -305,7 +305,7 @@ mainGameState.update = function() {
     game.physics.arcade.overlap(this.balls,this.playerSprite,mainGameState.onBludgerAndPlayerCollision,null,this);
     
     //Create the collision callback function for spells hitting the snitch
-    //game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
+    game.physics.arcade.collide(this.snitchBall,this.spells,mainGameState.onSnitchAndSpellCollision,null,this);
     
     //Update the score 
     this.scoreValue.setText(playerScore);
@@ -362,7 +362,7 @@ mainGameState.spawnBludger = function () {
 };
 
 //Creates the spawnSnitch function
-/*mainGameState.spawnSnitch = function () {
+mainGameState.spawnSnitch = function () {
     
     //Spawns the snitch according to the snitchTimer and gives it random coordinates and random speed within a set number defined by the randomSpeed-variable
     var x = game.rnd.integerInRange(0,game.width);
@@ -373,7 +373,7 @@ mainGameState.spawnBludger = function () {
     game.physics.arcade.enable(this.snitchBall);
     this.snitchBall.body.velocity.setTo(z,z);
     this.snitchBall.killsPlayer = false;
-};*/
+};
 
 //Creates the spawnRedSpell function
 mainGameState.spawnRedSpell = function () {
@@ -498,7 +498,7 @@ mainGameState.onBallAndSpellCollision = function (obj1,obj2) {
 };
 
 //Create function for collision of Snitch ball and spells 
-/*mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
+mainGameState.onSnitchAndSpellCollision = function (obj1,obj2) {
     
     obj1.pendingDestroy = true;
     obj2.pendingDestroy = true;
@@ -512,7 +512,7 @@ mainGameState.onBallAndSpellCollision = function (obj1,obj2) {
          playerScore+= 100;
     } 
     
-};*/
+};
 
 //Create function for collision of bludgers and player
 mainGameState.onBludgerAndPlayerCollision = function (obj1,obj2) {
