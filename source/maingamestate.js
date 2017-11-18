@@ -7,7 +7,7 @@ var playerScore = 0;
 mainGameState.preload = function () {
     
     //Load all the image sprites
-    //this.game.load.image("game-bg", "assets/images/ginny-w-bg.jpg");
+    this.game.load.image("game-bg", "assets/images/ginny-w-bg.jpg");
     this.game.load.image("tile-bg", "assets/images/bg-tile-2.jpg");
     this.game.load.image("player", "assets/images/ginny-w-player.png");
     this.game.load.image("quaffle", "assets/images/quaffle.png");
